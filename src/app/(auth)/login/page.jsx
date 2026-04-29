@@ -1,34 +1,39 @@
 "use client"
 
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
-    const handleLoginFunc = (e) =>{
-            e.preventDefault();
-            const email = e.target.email.value;
-            const password = e.target.password.value;
-            console.log("Email:", email, "Password:", password)
+    const {register, handleSubmit, formState: {errors}}= useForm()
 
+
+    const handleLoginFunc = (data) =>{
+        console.log(data);
     }
 
-
+    console.log(errors);
     return (
         <div className="min-h-[80vh] flex justify-center items-center bg-slate-100 mt-10">
             <div className="p-20 rounded-xl bg-white"> 
                 <h2 className="font-bold text-3xl text-center mb-6">Login your account</h2>
-                <form className="space-y-4" onSubmit={handleLoginFunc}>
+                <form className="space-y-4" onSubmit={handleSubmit(handleLoginFunc)}>
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend">Email</legend>
                         <input type="email" className="input" 
-                        name="email"
-                        placeholder="Your email" />
+                        placeholder="Your email"
+                        {...register("email", {required: "Enter Email"})}
+                        />
+                        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                         
                     </fieldset>
                     <fieldset className="fieldset mb-6">
                         <legend className="fieldset-legend">Password</legend>
                         <input type="password" className="input" 
-                        name="password"
-                        placeholder="Your password" />
+                        placeholder="Your password" 
+                            {...register("password", {required: "Enter password"})
+                            }
+                        />
+                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                         
                     </fieldset>
                     <button className="btn w-full bg-slate-800 text-white">Login</button>
